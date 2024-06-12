@@ -21,9 +21,13 @@ interface TokenData {
 export const signup = (userData: UserData): Promise<AxiosResponse<UserData>> =>
   api.post("/users", userData);
 
-export const getCurrentUser = (): Promise<UserData> =>
+export const getCurrentUser = (accessToken: string): Promise<UserData> =>
   api
-    .get<UserData>("/users/current-user")
+    .get<UserData>("/users/current-user", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
     .then((response: AxiosResponse<UserData>) => response.data);
 
 export const login = (credentials: LoginCredentials): Promise<TokenData> =>

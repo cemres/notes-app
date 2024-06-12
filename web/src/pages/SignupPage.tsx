@@ -21,7 +21,7 @@ export default function SignUp() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<boolean>(false);
-  const { login: loginUser } = useAuth();
+  const { loginUser } = useAuth();
 
   const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
 
@@ -33,8 +33,7 @@ export default function SignUp() {
     }
     try {
       await signup({ username, email, password });
-      await login({ email, password });
-      await loginUser();
+      await loginUser(email, password);
     } catch (err) {
       setError("Error signing up");
     }

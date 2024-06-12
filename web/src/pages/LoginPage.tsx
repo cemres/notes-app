@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { login } from "../services/authService";
 
 const defaultTheme = createTheme({
   typography: {
@@ -24,13 +23,12 @@ export default function SignInSide() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const { login: loginUser } = useAuth();
+  const { loginUser } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login({ email, password });
-      await loginUser();
+      await loginUser(email, password);
     } catch (err) {
       setError("Invalid credentials");
     }
@@ -107,9 +105,11 @@ export default function SignInSide() {
               >
                 Log in
               </Button>
-              <Typography component="p" variant="body2" color="error">
-                {error}
-              </Typography>
+              {error && (
+                <Typography component="p" variant="body2" color="error">
+                  {error}
+                </Typography>
+              )}
               <Grid container>
                 <Grid item>
                   <Link href="/signup" variant="body2">
